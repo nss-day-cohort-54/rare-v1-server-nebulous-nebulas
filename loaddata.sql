@@ -84,8 +84,37 @@ CREATE TABLE "Categories" (
   "label" varchar
 );
 
-INSERT INTO Categories ('label') VALUES ('News');
+DROP TABLE Categories
+
+INSERT INTO Categories ('label') VALUES ('news');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+
+DROP TABLE Posts
+INSERT INTO Posts 
+  ('id',
+  'user_id',
+  'category_id',
+  'title',
+  'publication_date',
+  'image_url',
+  'content',
+  'approved')
+
+VALUES
+  (3, 3, 1, "asdfds", "2000-02-01", "sad.png", "Post Content 2", 1)
+
+SELECT * FROM Posts
+
+
+
+ "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+  "user_id" INTEGER,
+  "category_id" INTEGER,
+  "title" varchar,
+  "publication_date" date,
+  "image_url" varchar,
+  "content" varchar,
+  "approved" bit
 
 SELECT * FROM Reactions
