@@ -1,9 +1,9 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import sqlite3
-from views.post_request import get_all_posts
-
-from views.user_request import create_user, login_user
+from views import delete_category, get_all_categories, get_single_category, update_category
+from views import get_all_posts, get_single_post
+from views import create_user, login_user
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -67,6 +67,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+                    
+            elif resource == "categories":
+                if id is not None:
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
         
         self.wfile.write(f'{response}'.encode())
         
@@ -88,12 +94,42 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write(response.encode())
 
     def do_PUT(self):
-        """Handles PUT requests to the server"""
-        pass
+        
+        content_len = int(self.headers.get("content-length", 0))
+        post_body = self.rfile.read(content_len)
+        success = False
+        
+        
+        post_body = json.loads(post_body)
+
+        (resource, id) = self.parse_url()
+        
+        if resource == "categories":
+            success = update_category(id, post_body)
+            
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+        
+        self.wfile.write("".encode())
+        
 
     def do_DELETE(self):
-        """Handle DELETE Requests"""
-        pass
+        
+        response = False
+        
+        (resource, id) = self.parse_url()
+        
+        if resource == "categories":
+            response = delete_category(id)
+        
+        if response is False:
+            self._set_headers(404)
+        else:
+            self._set_headers(204)
+            
+        self.wfile.write("".encode())
 
 
 def main():

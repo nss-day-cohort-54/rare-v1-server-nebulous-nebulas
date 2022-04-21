@@ -86,7 +86,7 @@ CREATE TABLE "Categories" (
 
 DROP TABLE Categories
 
-INSERT INTO Categories ('label') VALUES ('news');
+INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
@@ -102,9 +102,9 @@ INSERT INTO Posts
   'approved')
 
 VALUES
-  (3, 3, 1, "asdfds", "2000-02-01", "sad.png", "Post Content 2", 1)
+  (4, 2, 1, "aaaaa", "2000-02-01", "sad.png", "Post Content 2", 1)
 
-SELECT * FROM Posts
+SELECT * FROM Categories
 
 
 
