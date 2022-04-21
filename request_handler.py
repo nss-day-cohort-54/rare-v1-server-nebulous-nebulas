@@ -1,5 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+import sqlite3
+from views.post_request import get_all_posts
 
 from views.user_request import create_user, login_user
 
@@ -50,8 +52,24 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """Handle Get requests to the server"""
-        pass
+        
+        self._set_headers(200)
+        
+        parsed = self.parse_url()
+        
+        response = {}
+        
+        if len(parsed) == 2:
+            (resource, id) = parsed
+            
+            if resource == "posts":
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
+        
+        self.wfile.write(f'{response}'.encode())
+        
 
 
     def do_POST(self):
