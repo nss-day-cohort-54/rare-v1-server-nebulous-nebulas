@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import sqlite3
-from views import delete_category, get_all_categories, get_single_category, update_category
+from views import delete_category, get_all_categories, get_single_category, update_category, create_category
 from views import get_all_posts, get_single_post
 from views import create_user, login_user
 
@@ -52,31 +52,29 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        
+
         self._set_headers(200)
-        
+
         parsed = self.parse_url()
-        
+
         response = {}
-        
+
         if len(parsed) == 2:
             (resource, id) = parsed
-            
+
             if resource == "posts":
                 if id is not None:
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
-                    
+
             elif resource == "categories":
                 if id is not None:
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
-        
-        self.wfile.write(f'{response}'.encode())
-        
 
+        self.wfile.write(f'{response}'.encode())
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -91,44 +89,52 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif resource == 'register':
             response = create_user(post_body)
 
-        self.wfile.write(response.encode())
+            # Initialize new animal
+        new_category = None
+        # Add a new animal to the list. Don't worry about
+        # the orange squiggle, you'll define the create_animal
+        # function next.
+        if resource == "categories":
+            new_category = create_category(post_body)
+
+            self.wfile.write(f"{new_category}".encode())
+
+            self.wfile.write(response.encode())
 
     def do_PUT(self):
-        
+
         content_len = int(self.headers.get("content-length", 0))
         post_body = self.rfile.read(content_len)
         success = False
-        
-        
+
         post_body = json.loads(post_body)
 
         (resource, id) = self.parse_url()
-        
+
         if resource == "categories":
             success = update_category(id, post_body)
-            
+
         if success:
             self._set_headers(204)
         else:
             self._set_headers(404)
-        
+
         self.wfile.write("".encode())
-        
 
     def do_DELETE(self):
-        
+
         response = False
-        
+
         (resource, id) = self.parse_url()
-        
+
         if resource == "categories":
             response = delete_category(id)
-        
+
         if response is False:
             self._set_headers(404)
         else:
             self._set_headers(204)
-            
+
         self.wfile.write("".encode())
 
 
