@@ -61,3 +61,52 @@ def get_all_posts():
             posts.append(post.__dict__)
             
         return json.dumps(posts)
+
+def get_single_post(id):
+    with sqlite3.connect("./db.sqlite3") as will:
+        will.row_factory = sqlite3.Row
+        will_cursor = will.cursor()
+        
+        will_cursor.execute("""
+           SELECT
+                p.id,
+                p.user_id,
+                p.category_id,
+                p.title,
+                p.publication_date,
+                p.image_url,
+                p.content,
+                p.approved,
+                u.first_name,
+                u.last_name,
+                u.email,
+                u.bio,
+                u.username,
+                u.password,
+                u.profile_image_url,
+                u.created_on,
+                u.active,
+                c.label
+                
+            
+            FROM Posts p
+            JOIN Users u
+            ON p.user_id = u.id
+            LEFT JOIN Categories c
+            ON p.category_id = c.id
+            WHERE p.id = ?
+            ORDER BY p.publication_date ASC
+            
+            """, (id, ))
+        
+        wd = will_cursor.fetchone()
+        
+        post = Post(wd['id'], wd['user_id'], wd['category_id'], wd['title'], wd['publication_date'], wd['image_url'], wd['content'], wd['approved'])
+        category = Category(wd['category_id'], wd['label'])
+        user = User(wd['user_id'], wd['first_name'], wd['last_name'], wd['email'], wd['bio'], wd['username'], wd['password'], wd['profile_image_url'], wd['created_on'], wd['active'])
+        
+        post.category = category.__dict__
+        post.user = user.__dict__
+        
+        return json.dumps(post.__dict__)
+        
