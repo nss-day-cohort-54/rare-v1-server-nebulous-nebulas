@@ -4,6 +4,7 @@ import sqlite3
 from views import delete_category, get_all_categories, get_single_category, update_category
 from views import get_all_posts, get_single_post
 from views import create_user, login_user
+from views.tag_request import create_new_tag
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -90,6 +91,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         elif resource == 'register':
             response = create_user(post_body)
+        elif resource == 'tags':
+            response = create_new_tag(post_body)
 
         self.wfile.write(response.encode())
 
