@@ -4,6 +4,7 @@ import sqlite3
 from views import delete_category, get_all_categories, get_single_category, update_category
 from views import get_all_posts, get_single_post
 from views import create_user, login_user
+from views.post_request import create_new_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -86,12 +87,21 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = None
         (resource, id) = self.parse_url()
 
+        # Initialize new post
+        new_post = None   
+
         if resource == 'login':
             response = login_user(post_body)
         elif resource == 'register':
             response = create_user(post_body)
 
         self.wfile.write(response.encode())
+        
+        if resource == "postForm":
+            new_post = create_new_post(post_body)
+
+        # Encode the new post and send in response
+            self.wfile.write(f"{new_post}".encode())
 
     def do_PUT(self):
         
