@@ -115,6 +115,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         if resource == "categories":
             success = update_category(id, post_body)
+        if resource == "tags":
+            success = update_category(id, post_body)
             
         if success:
             self._set_headers(204)

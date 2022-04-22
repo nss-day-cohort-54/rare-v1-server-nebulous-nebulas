@@ -67,3 +67,20 @@ def get_single_tag(id):
         tag = Tag(data['id'], data['label'])
 
         return json.dumps(tag.__dict__)
+
+def update_tag(id, new_tag):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+        
+        db_cursor.execute("""
+            UPDATE Tags
+                label = ?
+            
+            WHERE id == ?
+            
+                """, (new_tag['label'], id, ))
+        
+        return json.dumps({
+            'token': id,
+            'valid': True
+        })
