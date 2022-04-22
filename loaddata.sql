@@ -79,6 +79,14 @@ CREATE TABLE "PostTags" (
   FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
 
+DROP TABLE Tags
+
+INSERT INTO Tags ('label') VALUES ('Python');
+INSERT INTO Tags ('label') VALUES ('SQL');
+INSERT INTO Tags ('label') VALUES ('JavaScript');
+
+
+
 CREATE TABLE "Categories" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "label" varchar
@@ -95,7 +103,7 @@ INSERT INTO Categories ('label') VALUES ('Nada');
 
 
 
-INSERT INTO Tags ('label') VALUES ('JavaScript');
+
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
 DROP TABLE Posts
