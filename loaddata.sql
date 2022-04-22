@@ -86,7 +86,15 @@ CREATE TABLE "Categories" (
 
 DROP TABLE Categories
 
-INSERT INTO Categories ('label') VALUES ('Self-Help');
+INSERT INTO Categories ('label') VALUES ('News');
+INSERT INTO Categories ('label') VALUES ('Entertainment');
+INSERT INTO Categories ('label') VALUES ('Self help');
+INSERT INTO Categories ('label') VALUES ('Nada');
+
+
+
+
+
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
@@ -118,3 +126,33 @@ SELECT * FROM Categories
   "approved" bit
 
 SELECT * FROM Reactions
+
+SELECT
+                p.id,
+                p.user_id,
+                p.category_id,
+                p.title,
+                p.publication_date,
+                p.image_url,
+                p.content,
+                p.approved,
+                u.first_name,
+                u.last_name,
+                u.email,
+                u.bio,
+                u.username,
+                u.password,
+                u.profile_image_url,
+                u.created_on,
+                u.active,
+                c.label
+                
+            
+            FROM Posts p
+            JOIN Users u
+            ON p.user_id = u.id
+            LEFT JOIN Categories c
+            ON p.category_id = c.id
+            WHERE p.id = 1
+            ORDER BY p.publication_date ASC
+            
