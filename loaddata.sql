@@ -182,3 +182,31 @@ INSERT INTO USERS
 
 VALUES
   (2, "Stevie", "Nicks", "stevie@email.com", "Cat by day, songbird by night.", "stevieTheCat", "dreams", "cat.png", "2020-04-26", 1)
+
+
+        SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            c.label
+            
+        from Posts p
+        LEFT OUTER Join Categories c
+            ON c.id = p.category_id
+        Join Users u
+            on u.id = p.user_id
+        Where p.user_id = 1  

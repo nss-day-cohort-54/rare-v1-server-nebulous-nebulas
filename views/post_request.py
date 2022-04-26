@@ -119,14 +119,31 @@ def get_user_posts(user_id):
 
         db_cursor.execute("""
         SELECT
-            *
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            c.label
             
         from Posts p
-        Join Categories c
+        LEFT OUTER Join Categories c
             ON c.id = p.category_id
         Join Users u
             on u.id = p.user_id
-        Where u.id = ?
+        Where p.user_id = ?
         """, ( user_id, ))
 
         posts = []
@@ -137,7 +154,7 @@ def get_user_posts(user_id):
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
                         row['publication_date'], row['image_url'], row['content'], row['approved'])
 
-            category = Categories(
+            category = Category(
                 row['category_id'], row['label']
             )
 
@@ -150,4 +167,4 @@ def get_user_posts(user_id):
 
             posts.append(post.__dict__)
 
-    return json.dumps(posts)    
+        return json.dumps(posts)
