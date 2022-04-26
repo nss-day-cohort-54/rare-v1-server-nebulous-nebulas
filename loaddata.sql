@@ -164,3 +164,21 @@ SELECT
             WHERE p.id = 1
             ORDER BY p.publication_date ASC
             
+
+
+SELECT * FROM USERS            
+
+INSERT INTO USERS 
+  ('id',
+  'first_name',
+  'last_name',
+  'email',
+  'bio',
+  'username',
+  'password',
+  'profile_image_url',
+  'created_on',
+  'active')
+
+VALUES
+  (2, "Stevie", "Nicks", "stevie@email.com", "Cat by day, songbird by night.", "stevieTheCat", "dreams", "cat.png", "2020-04-26", 1)

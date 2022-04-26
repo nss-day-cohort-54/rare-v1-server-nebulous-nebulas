@@ -5,6 +5,7 @@ from views import delete_category, get_all_categories, get_single_category, upda
 from views import get_all_posts, get_single_post
 from views import create_user, login_user
 from views.tag_request import create_new_tag, delete_tag, get_all_tags, get_single_tag
+from views.user_request import get_all_users, get_single_user
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -79,7 +80,13 @@ class HandleRequests(BaseHTTPRequestHandler):
                 if id is not None:
                     response = f"{get_single_tag(id)}"
                 else:
-                    response = f"{get_all_tags()}"        
+                    response = f"{get_all_tags()}"  
+                    
+            elif resource == "users":
+                if id is not None:
+                    response = f"{get_single_user(id)}"
+                else:
+                    response = f"{get_all_users()}"              
         
         self.wfile.write(f'{response}'.encode())
         
