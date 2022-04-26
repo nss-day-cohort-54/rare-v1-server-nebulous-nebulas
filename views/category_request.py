@@ -1,6 +1,3 @@
-
-from ast import Delete
-from hmac import new
 import sqlite3
 import json
 from models.Category import Category
@@ -45,8 +42,8 @@ def get_single_category(id):
                 c.label
             
             FROM Categories c
-            WHERE c.id = id
-                        """
+            WHERE c.id = ?
+                        """, (id, )
                           )
 
         data = db_cursor.fetchone()
@@ -118,4 +115,4 @@ def create_category(new_category):
         # primary key in the response.
         new_category['id'] = id
 
-    return json.dumps(new_category)
+        return json.dumps(new_category)

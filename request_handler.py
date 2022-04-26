@@ -74,15 +74,14 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
-                    
+
             elif resource == "tags":
                 if id is not None:
                     response = f"{get_single_tag(id)}"
                 else:
-                    response = f"{get_all_tags()}"        
-        
+                    response = f"{get_all_tags()}"
+
         self.wfile.write(f'{response}'.encode())
-        
 
         self.wfile.write(f'{response}'.encode())
 
@@ -127,7 +126,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_category(id, post_body)
         if resource == "tags":
             success = update_category(id, post_body)
-            
+
         if success:
             self._set_headers(204)
         else:
@@ -143,9 +142,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "categories":
             response = delete_category(id)
-        if resource =="tags":
+        if resource == "tags":
             response = delete_tag(id)
-        
+
         if response:
             self._set_headers(404)
         else:
