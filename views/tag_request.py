@@ -76,7 +76,7 @@ def update_tag(id, new_tag):
             UPDATE Tags
                 label = ?
             
-            WHERE id == ?
+            WHERE id = ?
             
                 """, (new_tag['label'], id, ))
         
@@ -84,3 +84,18 @@ def update_tag(id, new_tag):
             'token': id,
             'valid': True
         })
+        
+
+def delete_tag(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+        
+        db_cursor.execute("""
+            DELETE FROM Tags
+            WHERE id = ? """, (id, ))
+    
+        return json.dumps({
+                'token': id,
+                'valid': True
+            })
+        

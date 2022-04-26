@@ -4,7 +4,7 @@ import sqlite3
 from views import delete_category, get_all_categories, get_single_category, update_category
 from views import get_all_posts, get_single_post
 from views import create_user, login_user
-from views.tag_request import create_new_tag, get_all_tags, get_single_tag
+from views.tag_request import create_new_tag, delete_tag, get_all_tags, get_single_tag
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -134,8 +134,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         if resource == "categories":
             response = delete_category(id)
+        if resource =="tags":
+            response = delete_tag(id)
         
-        if response is False:
+        if response:
             self._set_headers(404)
         else:
             self._set_headers(204)
