@@ -128,8 +128,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         
-        response = False
-        
         (resource, id) = self.parse_url()
         
         if resource == "categories":
@@ -137,10 +135,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource =="tags":
             response = delete_tag(id)
         
-        if response:
+        if response == False:
             self._set_headers(404)
         else:
             self._set_headers(204)
+            
             
         self.wfile.write("".encode())
 
