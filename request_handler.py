@@ -23,7 +23,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             return (resource, key, value)
         else:
             id = None
-            try:
+            try: #check to see if there's an index 2 of path_params 
                 id = int(path_params[2])
             except (IndexError, ValueError):
                 pass
@@ -149,6 +149,6 @@ def main():
     port = 8088
     HTTPServer((host, port), HandleRequests).serve_forever()
 
-
+#if this file isn't being imported anywhere else and runs directly, it is recognized as the "main" module and the start of the code. 
 if __name__ == "__main__":
     main()

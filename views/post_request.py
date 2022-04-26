@@ -20,22 +20,11 @@ def get_all_posts():
                 p.image_url,
                 p.content,
                 p.approved,
-                u.first_name,
-                u.last_name,
-                u.email,
-                u.bio,
-                u.username,
-                u.password,
-                u.profile_image_url,
-                u.created_on,
-                u.active,
                 c.label
                 
             
             FROM Posts p
-            JOIN Users u
-            ON p.user_id = u.id
-            LEFT JOIN Categories c
+            JOIN Categories c
             ON p.category_id = c.id
             ORDER BY p.publication_date ASC
             """
@@ -47,17 +36,13 @@ def get_all_posts():
 
         for row in dataset:
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
-                        row['publication_date'], row['image_url'], row['content'], row['approved'])
+                        row['publication_date'], row['image_url'], row['content'])
 
             category = Category(row['category_id'], row['label'])
 
-            user = User(row['user_id'], row['first_name'], row['last_name'], row['email'], row['bio'],
-                        row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
-
             post.category = category.__dict__
-            post.user = user.__dict__
-
-            posts.append(post.__dict__)
+            
+            posts.append (post.__dict__)
 
         return json.dumps(posts)
 
@@ -77,15 +62,6 @@ def get_single_post(id):
                 p.image_url,
                 p.content,
                 p.approved,
-                u.first_name,
-                u.last_name,
-                u.email,
-                u.bio,
-                u.username,
-                u.password,
-                u.profile_image_url,
-                u.created_on,
-                u.active,
                 c.label
                 
             
@@ -102,13 +78,10 @@ def get_single_post(id):
         wd = will_cursor.fetchone()
 
         post = Post(wd['id'], wd['user_id'], wd['category_id'], wd['title'],
-                    wd['publication_date'], wd['image_url'], wd['content'], wd['approved'])
+                    wd['publication_date'], wd['image_url'], wd['content'])
         category = Category(wd['category_id'], wd['label'])
-        user = User(wd['user_id'], wd['first_name'], wd['last_name'], wd['email'], wd['bio'],
-                    wd['username'], wd['password'], wd['profile_image_url'], wd['created_on'], wd['active'])
 
         post.category = category.__dict__
-        post.user = user.__dict__
 
         return json.dumps(post.__dict__)
 
