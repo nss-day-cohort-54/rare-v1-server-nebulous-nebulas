@@ -4,7 +4,7 @@ import sqlite3
 from views import delete_category, get_all_categories, get_single_category, update_category, create_category
 from views import get_all_posts, get_single_post
 from views import create_user, login_user
-from views.post_request import get_user_posts
+from views.post_request import get_user_posts, update_post
 from views.tag_request import create_new_tag, delete_tag, get_all_tags, get_single_tag
 from views.user_request import get_all_users, get_single_user
 
@@ -137,6 +137,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_category(id, post_body)
         if resource == "tags":
             success = update_category(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)    
 
         if success:
             self._set_headers(204)
