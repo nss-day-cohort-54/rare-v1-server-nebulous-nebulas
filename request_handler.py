@@ -5,6 +5,7 @@ from views import delete_category, get_all_categories, get_single_category, upda
 from views import get_all_posts, get_single_post
 from views import create_user, login_user
 from views.post_request import create_new_post
+from views.tag_request import create_new_tag, delete_tag, get_all_tags, get_single_tag
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -74,6 +75,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
+                    
+            elif resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"        
         
         self.wfile.write(f'{response}'.encode())
         
@@ -87,21 +94,19 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = None
         (resource, id) = self.parse_url()
 
-        # Initialize new post
-        new_post = None   
 
         if resource == 'login':
             response = login_user(post_body)
         elif resource == 'register':
             response = create_user(post_body)
-
-        self.wfile.write(response.encode())
-        
-        if resource == "postForm":
-            new_post = create_new_post(post_body)
+        elif resource == 'tags':
+            response = create_new_tag(post_body)
+            
+        elif resource == "newPost":
+            response = create_new_post(post_body)
 
         # Encode the new post and send in response
-            self.wfile.write(f"{new_post}".encode())
+            self.wfile.write(f"{response}".encode())
 
     def do_PUT(self):
         
@@ -116,6 +121,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         if resource == "categories":
             success = update_category(id, post_body)
+        if resource == "tags":
+            success = update_category(id, post_body)
             
         if success:
             self._set_headers(204)
@@ -127,17 +134,18 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         
-        response = False
-        
         (resource, id) = self.parse_url()
         
         if resource == "categories":
             response = delete_category(id)
+        if resource =="tags":
+            response = delete_tag(id)
         
-        if response is False:
+        if response == False:
             self._set_headers(404)
         else:
             self._set_headers(204)
+            
             
         self.wfile.write("".encode())
 

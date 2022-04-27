@@ -11,7 +11,7 @@ def get_all_posts():
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-            SELECT
+           SELECT
                 p.id,
                 p.user_id,
                 p.category_id,
@@ -24,10 +24,10 @@ def get_all_posts():
                 
             
             FROM Posts p
-            JOIN Categories c
+            LEFT JOIN Categories c
             ON p.category_id = c.id
-            ORDER BY p.publication_date ASC
-            """
+            WHERE p.id = ?
+            ORDER BY p.publication_date ASC """
                           )
 
         posts = []
@@ -41,8 +41,8 @@ def get_all_posts():
             category = Category(row['category_id'], row['label'])
 
             post.category = category.__dict__
-            
-            posts.append (post.__dict__)
+
+            posts.append(post.__dict__)
 
         return json.dumps(posts)
 
@@ -87,17 +87,29 @@ def get_single_post(id):
 
 
 def create_new_post(new_post):
-    # Get the id value of the last new_post in the list
-    max_id = NEW_POST[-1]["id"]
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-    # Add 1 to whatever that number is
-    new_id = max_id + 1
 
-    # Add an `id` property to the new_post dictionary
-    new_post["id"] = new_id
-
-    # Add the new_post dictionary to the list
-    NEW_POST.append(new_post)
-
-    # Return the dictionary with `id` property added
-    return new_post
+        db_cursor.execute("""
+            INSERT INTO Posts
+            (
+            'user_id',
+            'category_id',
+            'title',
+            'publication_date',
+            'image_url',
+            'content',
+            'approved'
+            )
+            VALUES (?, ?, ? ,? , ?, ?, ?)
+        """, (new_post['userId'],new_post['categoryId'],new_post['title'],
+              new_post['publicationDate'],new_post['imageUrl'],new_post['content'],new_post['approved']))
+        id=db_cursor.lastrowid
+        new_post['id']=id 
+        
+        return json.dumps({
+                'token': id,
+                'valid': True
+            })
