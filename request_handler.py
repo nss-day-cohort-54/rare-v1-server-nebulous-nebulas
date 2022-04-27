@@ -83,8 +83,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         self.wfile.write(f'{response}'.encode())
 
-        self.wfile.write(f'{response}'.encode())
-
     def do_POST(self):
         """Make a post request to the server"""
         self._set_headers(201)
@@ -135,20 +133,19 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write("".encode())
 
     def do_DELETE(self):
-        
+
         (resource, id) = self.parse_url()
 
         if resource == "categories":
             response = delete_category(id)
         if resource == "tags":
             response = delete_tag(id)
-        
+
         if response == False:
             self._set_headers(404)
         else:
             self._set_headers(204)
-            
-            
+
         self.wfile.write("".encode())
 
 
