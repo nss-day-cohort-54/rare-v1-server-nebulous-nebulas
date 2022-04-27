@@ -4,12 +4,14 @@ import sqlite3
 from views import delete_category, get_all_categories, get_single_category, update_category, create_category
 from views import get_all_posts, get_single_post
 from views import create_user, login_user
+from views.post_request import get_user_posts
 from views.tag_request import create_new_tag, delete_tag, get_all_tags, get_single_tag
+from views.user_request import get_all_users, get_single_user
 
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
-
+    # http://127.0.0.1:8088/posts?user=1
     def parse_url(self):
         """Parse the url into the resource and id"""
         path_params = self.path.split('/')
@@ -79,7 +81,24 @@ class HandleRequests(BaseHTTPRequestHandler):
                 if id is not None:
                     response = f"{get_single_tag(id)}"
                 else:
-                    response = f"{get_all_tags()}"
+                    response = f"{get_all_tags()}"  
+                    
+            elif resource == "users":
+                if id is not None:
+                    response = f"{get_single_user(id)}"
+                else:
+                    response = f"{get_all_users()}"  
+
+        #get users posts  
+        # Response from parse_url() is a tuple with 3
+        # items in it, which means the request was for
+        # `/resource?parameter=value`          
+        elif len(parsed) == 3:
+            ( resource, key, value ) = parsed
+            
+            if key == "user" and resource == "posts":
+                response = get_user_posts(value)                     
+        
 
         self.wfile.write(f'{response}'.encode())
 
@@ -97,18 +116,12 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         elif resource == 'tags':
             response = create_new_tag(post_body)
+        elif resource == 'categories':
+            response = create_category(post_body)  
 
-            # Initialize new animal
-        new_category = None
-        # Add a new animal to the list. Don't worry about
-        # the orange squiggle, you'll define the create_animal
-        # function next.
-        if resource == "categories":
-            new_category = create_category(post_body)
 
-            self.wfile.write(f"{new_category}".encode())
 
-            self.wfile.write(response.encode())
+        self.wfile.write(response.encode())
 
     def do_PUT(self):
 

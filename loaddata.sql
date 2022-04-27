@@ -120,7 +120,24 @@ INSERT INTO Posts
 VALUES
   (4, 2, 1, "aaaaa", "2000-02-01", "sad.png", "Post Content 2", 1)
 
+
+INSERT INTO Posts 
+  ('id',
+  'user_id',
+  'category_id',
+  'title',
+  'publication_date',
+  'image_url',
+  'content',
+  'approved')
+
+VALUES
+  (2, 2, 2, "A post from Stevie", "2020-04-27", "sleepy.png", "This is a test post from Stevie's account", 1)
+  
+
 SELECT * FROM Categories
+
+SELECT * FROM POSTS
 
 
 
@@ -164,3 +181,49 @@ SELECT
             WHERE p.id = 1
             ORDER BY p.publication_date ASC
             
+
+
+SELECT * FROM USERS            
+
+INSERT INTO USERS 
+  ('id',
+  'first_name',
+  'last_name',
+  'email',
+  'bio',
+  'username',
+  'password',
+  'profile_image_url',
+  'created_on',
+  'active')
+
+VALUES
+  (2, "Stevie", "Nicks", "stevie@email.com", "Cat by day, songbird by night.", "stevieTheCat", "dreams", "cat.png", "2020-04-26", 1)
+
+
+        SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            c.label
+            
+        from Posts p
+        LEFT OUTER Join Categories c
+            ON c.id = p.category_id
+        Join Users u
+            on u.id = p.user_id
+        Where p.user_id = 1  
