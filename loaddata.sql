@@ -118,7 +118,7 @@ INSERT INTO Posts
   'approved')
 
 VALUES
-  (4, 2, 1, "aaaaa", "2000-02-01", "sad.png", "Post Content 2", 1)
+  (1, 2, 1, "test", "2000-02-01", "Sosad.png", "Post Content 25", 1)
 
 SELECT * FROM Categories
 

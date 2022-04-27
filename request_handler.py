@@ -102,7 +102,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif resource == 'tags':
             response = create_new_tag(post_body)
             
-        elif resource == "newPost":
+        elif resource == "posts":
             response = create_new_post(post_body)
 
         # Encode the new post and send in response

@@ -11,32 +11,30 @@ def get_all_posts():
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-           SELECT
-                p.id,
-                p.user_id,
-                p.category_id,
-                p.title,
-                p.publication_date,
-                p.image_url,
-                p.content,
-                p.approved,
-                c.label
-                
+        SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            c.label
             
-            FROM Posts p
-            LEFT JOIN Categories c
-            ON p.category_id = c.id
-            WHERE p.id = ?
-            ORDER BY p.publication_date ASC """
-                          )
+        
+        FROM Posts p
+        LEFT Outer JOIN Categories c
+        ON p.category_id = c.id
+        ORDER BY p.publication_date ASC 
+        """)
 
         posts = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
-                        row['publication_date'], row['image_url'], row['content'])
+            post = Post(row['id'], row['user_id'], row['category_id'], row['title'],row['publication_date'], row['image_url'], row['content'], row['approved'])
 
             category = Category(row['category_id'], row['label'])
 
