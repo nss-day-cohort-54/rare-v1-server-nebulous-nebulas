@@ -98,7 +98,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             
             if key == "user" and resource == "posts":
                 response = get_user_posts(value)                     
-
+        
 
         self.wfile.write(f'{response}'.encode())
 
@@ -116,18 +116,12 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         elif resource == 'tags':
             response = create_new_tag(post_body)
+        elif resource == 'categories':
+            response = create_category(post_body)  
 
-            # Initialize new animal
-        new_category = None
-        # Add a new animal to the list. Don't worry about
-        # the orange squiggle, you'll define the create_animal
-        # function next.
-        if resource == "categories":
-            new_category = create_category(post_body)
 
-            self.wfile.write(f"{new_category}".encode())
 
-            self.wfile.write(response.encode())
+        self.wfile.write(response.encode())
 
     def do_PUT(self):
 
