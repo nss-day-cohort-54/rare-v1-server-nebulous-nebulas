@@ -120,7 +120,24 @@ INSERT INTO Posts
 VALUES
   (4, 2, 1, "aaaaa", "2000-02-01", "sad.png", "Post Content 2", 1)
 
+
+INSERT INTO Posts 
+  ('id',
+  'user_id',
+  'category_id',
+  'title',
+  'publication_date',
+  'image_url',
+  'content',
+  'approved')
+
+VALUES
+  (2, 2, 2, "A post from Stevie", "2020-04-27", "sleepy.png", "This is a test post from Stevie's account", 1)
+  
+
 SELECT * FROM Categories
+
+SELECT * FROM POSTS
 
 
 

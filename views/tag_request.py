@@ -94,8 +94,10 @@ def delete_tag(id):
             DELETE FROM Tags
             WHERE id = ? """, (id, ))
     
-        return json.dumps({
-                'token': id,
-                'valid': True
-            })
+        rows_affected = db_cursor.rowcount
+        
+        if rows_affected > 0:
+            return True
+        else:
+            return False
         
